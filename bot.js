@@ -37,4 +37,4 @@ const processMemberCommand = async (message) => {
      }
 }
 
-bot.login(config.token)
+bot.login(config.token).catch(error => logger.logError('Whoops! %s', [error]))

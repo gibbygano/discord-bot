@@ -1,0 +1,1 @@
+Don't forget to bring a towe...run npm install in the root of this project before trying to run anything.

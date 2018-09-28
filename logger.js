@@ -6,9 +6,9 @@ const logger = winston.createLogger({
         new (winston.transports.File)({ filename: `bootbot_log_${Date.now()}.log` })
     ],
     format: winston.format.combine(
+        winston.format.colorize({ all: true }),
         winston.format.splat(),
-        winston.format.simple(),
-        winston.format.colorize({ all: true })
+        winston.format.simple()
     )
 });
 
