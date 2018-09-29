@@ -1,6 +1,15 @@
 {
-   "token": "[TOKEN FOR BOT HERE]",
-   "filter": [
-       "fortnite"
-   ]
+    "token": "[TOKEN FOR BOT HERE]",
+    "media": {
+        "someMedia": "exampleFile.wav"
+    },
+    "filter": [
+        "fortnite"
+    ],
+    "helpMenu": [
+        "__**Command List:**__",
+        "\n**!someMedia**: *play some media.*",
+        "\n**!help**: *show commands.*"
+    ],
+    "prefix": "!"
 }

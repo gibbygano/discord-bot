@@ -9,7 +9,7 @@ const logger = winston.createLogger({
                 winston.format.simple()
             )
         }),
-        new (winston.transports.File)({ 
+        new (winston.transports.File)({
             filename: `./log/bootbot_log_${Date.now()}.log`,
             format: winston.format.combine(
                 winston.format.timestamp({
@@ -23,7 +23,7 @@ const logger = winston.createLogger({
 });
 
 module.exports = {
-    logInfo: (info, args) => { 
+    logInfo: (info, args) => {
         logger.log('info', info, ...args);
     },
     logError: (info, args) => {
