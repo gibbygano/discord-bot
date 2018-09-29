@@ -2,12 +2,12 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const config = require("./config.json");
 const logger = require("./logger");
+let randomLenny = config.lenny[Math.floor(Math.random()*config.lenny.length)];
 
-bot.on('ready', () => {
-    logger.logInfo('[***%s has started***]\n%s users \n%s channels \n%s guild(s)', [bot.user.username, bot.users.size, bot.channels.size, bot.guilds.size]);
-    bot.user.setActivity(`Serving ${bot.guilds.size} servers`);
-});
-bot.on('message', async message => {
+bot.on('ready', async () => {
+    logger.logInfo('[***%s has started***]', [bot.user.username]);
+    setWaiting();
+}).on('message', async message => {
     const msg = message.content;
 
     if (!msg.substring(0, 1).localeCompare(config.prefix))
@@ -36,7 +36,7 @@ const processMemberCommand = async (message) => {
         help(message);
 }
 
-const playAudio = async (message, file) => {
+const playAudio = async (message, cmd) => {
     const vchannel = message.member.voiceChannel;
     const vchannelName = !vchannel ? null : vchannel.name;
     const botName = bot.user.username;
@@ -47,17 +47,21 @@ const playAudio = async (message, file) => {
 
     await vchannel.join()
         .then(connection => {
-            dispatcher = connection.playFile(config.media[file]);
-            logger.logInfo('[***%s has started playing %s in %s***]', [botName, config.media[file], vchannelName]);
+            dispatcher = connection.playFile(config.media[cmd]);
+            logger.logInfo('[***%s has started playing %s in %s***]', [botName, config.media[cmd], vchannelName]);
+            bot.user.setActivity(`music in ${vchannelName}.`, {type: "PLAYING"});
 
             dispatcher.on("end", end => {
                 vchannel.leave();
                 logger.logInfo('[***%s has left %s***]', [botName, vchannelName]);
+                setWaiting();
             });
-        })
-        .catch(error => logger.logError('Whoops! Couldn\'t play %s.:\n', [error]));
+        }).catch(error => {
+            logger.logError('Whoops! Couldn\'t play %s.:\n', [error]);
+            setWaiting();
+        });
 }
 
-
 const help = async (message) => await message.channel.send(config.helpMenu.join(''));
+const setWaiting = async () => await bot.user.setActivity(`you ${randomLenny}.`, {type: "WATCHING"});
 const switchcase = (cases, key) => cases.hasOwnProperty(key) ? true : false;
